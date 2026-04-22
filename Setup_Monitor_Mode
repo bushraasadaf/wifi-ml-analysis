@@ -1,0 +1,11 @@
+#Commands to setup monitor mode in command prompt:
+<!-- Monitor Mode was enabled using the following commands:
+This command terminates interfering network processes to allow Monitor Mode activation: -->
+sudo airmon-ng check kill
+<!-- This converts the wireless interface (wlp0s20f3) into Monitor Mode: -->
+sudo airmon-ng start wlp0s20f3
+<!-- Note: wlp0s20f3 is the Linux system name for the wireless network interface card (NIC), assigned dynamically by the operating system. -->
+<!-- After activation, the interface typically appears as:
+Wlp0s20f3mon
+Disabling Monitor Mode -->
+sudo airmon-ng stop wlp0s20f3mon

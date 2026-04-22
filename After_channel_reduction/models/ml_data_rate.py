@@ -24,8 +24,20 @@ df["WiFi_Version"] = df["WiFi_Version"].map({
 })
 
 # PHY type encoding to binary and drop original column
+#one-hot encode: 0->
 df = pd.get_dummies(df, columns=["PHY_Type"], drop_first=True)
 
+from matplotlib import pyplot as plt
+# VISUAL VALIDATION: Signal vs Distance
+# Calculate the average signal for each distance
+avg_signal = df.groupby('Distance')['Signal_dBm'].mean()
+# Plot
+avg_signal.plot(kind='bar', color=['#e74c3c', '#3498db'])
+plt.title("Average Signal Strength by Distance")
+plt.ylabel("Average Signal (dBm)")
+plt.xlabel("Distance (0=Far, 1=Near)")
+plt.xticks(rotation=0)
+plt.show()
 
 # FEATURES & TARGET
 #drop Location since it's just a label and won't help the model learn patterns for data rate prediction
@@ -64,6 +76,13 @@ print("R2:", r2_score(y_test, y_pred))
 # print(results.head(20))
 
 import matplotlib.pyplot as plt
+#scatter plot of signal strength vs data rate to visualize their relationship and see if there are any patterns that the model could be learning from:
+plt.figure()
+plt.scatter(df["Signal_dBm"], df["Data_Rate_Mbps"], alpha=0.4)
+plt.xlabel("Signal Strength (dBm)")
+plt.ylabel("Data Rate (Mbps)")
+plt.title("Signal Strength vs Data Rate")
+plt.show()
 # Scatter plot of actual vs predicted data rates
 plt.figure()
 
@@ -94,3 +113,10 @@ cols = X.columns
 plt.barh(cols, importances)
 plt.title("Feature Importance - Data Rate Prediction")
 plt.show()
+
+# Analyze high data rate predictions to see if there are any common characteristics (e.g. very strong signal, specific MCS values, certain channels) that could explain why the model predicts high data rates for those samples:
+threshold = df["Data_Rate_Mbps"].quantile(0.99)
+
+high_rate_df = df[df["Data_Rate_Mbps"] >= threshold]
+
+print(high_rate_df[["Signal_dBm", "MCS", "WiFi_Version", "Load", "Distance", "Channel", "Data_Rate_Mbps"]])

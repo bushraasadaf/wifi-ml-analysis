@@ -45,7 +45,18 @@ print(classification_report(y_test, y_pred))
 
 importances = model.feature_importances_
 cols = X.columns
-
+#plot feature importance to see which features are most influential in predicting load, which can help us understand the underlying patterns the model is learning and identify key factors that contribute to rush vs empty states:
 plt.barh(cols, importances)
 plt.title("Feature Importance - Load Prediction")
 plt.show()
+
+#plotting load distribution to see if the dataset is imbalanced, which could explain why the model might struggle to predict certain classes (e.g. if rush samples are much less common than empty samples, the model might be biased towards predicting empty):
+df["Load"].value_counts().plot(kind="bar")
+plt.title("Load Distribution")
+plt.show()
+
+#printing percentage distribution of load classes to confirm if there is an imbalance in the dataset that could be affecting model performance:
+load_counts = df["Load"].value_counts(normalize=True) * 100
+
+print("Network Load Distribution (%):")
+print(load_counts)

@@ -47,7 +47,7 @@ def get_mcs(row):
         return float(row["MCS_Legacy"]), "WiFi4"
     else:
         return np.nan, "Unknown"
-
+#axis=1 applies the function to each row, result_type="expand" allows returning multiple columns (MCS and WiFi_Version):
 df[["MCS", "WiFi_Version"]] = df.apply(get_mcs, axis=1, result_type="expand")
 
 # DROP RAW / UNNEEDED COLUMNS
@@ -69,9 +69,16 @@ df = df.drop_duplicates()
 df.to_csv("wifi_preprocessed_clean.csv", index=False)
 
 #information needed to conclude which features are most important for MCS prediction and to understand the distribution of the dataset
-print(df["Load"].value_counts())
-print(df["Distance"].value_counts())
+#pritning percentage distribution of distance and load classes
+print(df["Distance"].value_counts(normalize=True) * 100)
+print(df["Load"].value_counts(normalize=True) * 100)
 # # print(df.head())
+
+#checking number of samples:
+df = pd.read_csv("wifi_preprocessed_clean.csv")
+
+print("Total samples:", len(df))
+print("Rows, Columns:", df.shape)
 
 # missing = df["MCS"].isna().sum()
 # total = len(df)
