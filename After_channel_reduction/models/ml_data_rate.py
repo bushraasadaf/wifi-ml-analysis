@@ -56,10 +56,10 @@ y_pred = model.predict(X_test)
 print("MAE:", mean_absolute_error(y_test, y_pred))
 print("R2:", r2_score(y_test, y_pred))
 # Create a DataFrame to compare actual vs predicted values
-results = pd.DataFrame({
-    "Actual": y_test.values,
-    "Predicted": y_pred
-})
+# results = pd.DataFrame({
+#     "Actual": y_test.values,
+#     "Predicted": y_pred
+# })
 
 print(results.head(20))
 
