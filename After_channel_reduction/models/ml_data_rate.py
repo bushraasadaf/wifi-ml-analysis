@@ -61,7 +61,7 @@ print("R2:", r2_score(y_test, y_pred))
 #     "Predicted": y_pred
 # })
 
-print(results.head(20))
+# print(results.head(20))
 
 import matplotlib.pyplot as plt
 # Scatter plot of actual vs predicted data rates
